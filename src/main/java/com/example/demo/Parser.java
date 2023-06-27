@@ -17,7 +17,7 @@ public class Parser {
         projectDeclaration();
 
         if (lookahead.getType() == TokenType.DOT) {
-            matchTokenType(TokenType.DOT);
+            compareTokenType(TokenType.DOT);
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Parsing completed successfully.");
             alert.show();
             System.out.println("Parsing completed successfully.");
@@ -37,9 +37,9 @@ public class Parser {
     }
 
     private void projectHeading() {
-        matchTokenType(TokenType.PROJECT);
-        matchTokenType(TokenType.NAME);
-        matchTokenType(TokenType.SEMICOLON);
+        compareTokenType(TokenType.PROJECT);
+        compareTokenType(TokenType.NAME);
+        compareTokenType(TokenType.SEMICOLON);
     }
 
     private void declarations() {
@@ -50,41 +50,41 @@ public class Parser {
 
     private void constDecl() {
         if (lookahead.getType() == TokenType.CONST) {
-            matchTokenType(TokenType.CONST);
+            compareTokenType(TokenType.CONST);
             while (lookahead.getType() == TokenType.NAME) {
                 constItem();
-                matchTokenType(TokenType.SEMICOLON);
+                compareTokenType(TokenType.SEMICOLON);
             }
         }
     }
 
     private void constItem() {
-        matchTokenType(TokenType.NAME);
-        matchTokenType(TokenType.EQUALS);
-        matchTokenType(TokenType.INTEGER_VALUE);
+        compareTokenType(TokenType.NAME);
+        compareTokenType(TokenType.EQUALS);
+        compareTokenType(TokenType.INTEGER_VALUE);
     }
 
     private void varDecl() {
         if (lookahead.getType() == TokenType.VAR) {
-            matchTokenType(TokenType.VAR);
+            compareTokenType(TokenType.VAR);
             while (lookahead.getType() == TokenType.NAME) {
                 varItem();
-                matchTokenType(TokenType.SEMICOLON);
+                compareTokenType(TokenType.SEMICOLON);
             }
         }
     }
 
     private void varItem() {
         nameList();
-        matchTokenType(TokenType.COLON);
-        matchTokenType(TokenType.INT);
+        compareTokenType(TokenType.COLON);
+        compareTokenType(TokenType.INT);
     }
 
     private void nameList() {
-        matchTokenType(TokenType.NAME);
+        compareTokenType(TokenType.NAME);
         while (lookahead.getType() == TokenType.COMMA) {
-            matchTokenType(TokenType.COMMA);
-            matchTokenType(TokenType.NAME);
+            compareTokenType(TokenType.COMMA);
+            compareTokenType(TokenType.NAME);
         }
     }
 
@@ -93,20 +93,20 @@ public class Parser {
             subroutineHeading();
             declarations();
             compoundStmt();
-            matchTokenType(TokenType.SEMICOLON);
+            compareTokenType(TokenType.SEMICOLON);
         }
     }
 
     private void subroutineHeading() {
-        matchTokenType(TokenType.ROUTINE);
-        matchTokenType(TokenType.NAME);
-        matchTokenType(TokenType.SEMICOLON);
+        compareTokenType(TokenType.ROUTINE);
+        compareTokenType(TokenType.NAME);
+        compareTokenType(TokenType.SEMICOLON);
     }
 
     private void compoundStmt() {
-        matchTokenType(TokenType.START);
+        compareTokenType(TokenType.START);
         stmtList();
-        matchTokenType(TokenType.END);
+        compareTokenType(TokenType.END);
     }
 
     private void stmtList() {
@@ -114,7 +114,7 @@ public class Parser {
                 statement();
             if (lookahead.getType() != TokenType.SEMICOLON)
                 error("Expected ';' between statements position: " + lookahead.getCharPosition());
-            matchTokenType(TokenType.SEMICOLON);
+            compareTokenType(TokenType.SEMICOLON);
         }
     }
 
@@ -130,9 +130,9 @@ public class Parser {
     }
 
     private void assStmt() {
-        matchTokenType(TokenType.NAME);
-        matchTokenType(TokenType.COLON);
-        matchTokenType(TokenType.EQUALS);
+        compareTokenType(TokenType.NAME);
+        compareTokenType(TokenType.COLON);
+        compareTokenType(TokenType.EQUALS);
         arithExp();
     }
 
@@ -140,10 +140,10 @@ public class Parser {
         term();
         while (lookahead.getType() == TokenType.ADD_SIGN || lookahead.getType() == TokenType.SUB_SIGN) {
             if (lookahead.getType() == TokenType.ADD_SIGN) {
-                matchTokenType(TokenType.ADD_SIGN);
+                compareTokenType(TokenType.ADD_SIGN);
             }
             else if (lookahead.getType() == TokenType.SUB_SIGN) {
-                matchTokenType(TokenType.SUB_SIGN);
+                compareTokenType(TokenType.SUB_SIGN);
             }
             term();
         }
@@ -155,13 +155,13 @@ public class Parser {
         while (lookahead.getType() == TokenType.MUL_SIGN || lookahead.getType() == TokenType.DIV_SIGN
                 || lookahead.getType() == TokenType.MOD_SIGN) {
             if (lookahead.getType() == TokenType.MUL_SIGN) {
-                matchTokenType(TokenType.MUL_SIGN);
+                compareTokenType(TokenType.MUL_SIGN);
             }
             else if (lookahead.getType() == TokenType.DIV_SIGN) {
-                matchTokenType(TokenType.DIV_SIGN);
+                compareTokenType(TokenType.DIV_SIGN);
             }
             else if (lookahead.getType() == TokenType.MOD_SIGN) {
-                matchTokenType(TokenType.MOD_SIGN);
+                compareTokenType(TokenType.MOD_SIGN);
             }
             factor();
         }
@@ -169,9 +169,9 @@ public class Parser {
 
     private void factor() {
         if (lookahead.getType() == TokenType.LEFT_PAREN) {
-            matchTokenType(TokenType.LEFT_PAREN);
+            compareTokenType(TokenType.LEFT_PAREN);
             arithExp();
-            matchTokenType(TokenType.RIGHT_PAREN);
+            compareTokenType(TokenType.RIGHT_PAREN);
         } else if (lookahead.getType() == TokenType.NAME || lookahead.getType() == TokenType.INTEGER_VALUE) {
             nameValue();
         } else {
@@ -181,54 +181,54 @@ public class Parser {
 
     private void nameValue() {
         if (lookahead.getType() == TokenType.NAME)
-            matchTokenType(TokenType.NAME);
+            compareTokenType(TokenType.NAME);
         else if (lookahead.getType() == TokenType.INTEGER_VALUE)
-            matchTokenType(TokenType.INTEGER_VALUE);
+            compareTokenType(TokenType.INTEGER_VALUE);
         else
             error("Expected name or integer value in name-value position: " + lookahead.getCharPosition() );
     }
 
     private void inoutStmt() {
         if (lookahead.getType() == TokenType.INPUT) {
-            matchTokenType(TokenType.INPUT);
-            matchTokenType(TokenType.LEFT_PAREN);
-            matchTokenType(TokenType.NAME);
-            matchTokenType(TokenType.RIGHT_PAREN);
+            compareTokenType(TokenType.INPUT);
+            compareTokenType(TokenType.LEFT_PAREN);
+            compareTokenType(TokenType.NAME);
+            compareTokenType(TokenType.RIGHT_PAREN);
         } else if (lookahead.getType() == TokenType.OUTPUT) {
-            matchTokenType(TokenType.OUTPUT);
-            matchTokenType(TokenType.LEFT_PAREN);
+            compareTokenType(TokenType.OUTPUT);
+            compareTokenType(TokenType.LEFT_PAREN);
             nameValue();
-            matchTokenType(TokenType.RIGHT_PAREN);
+            compareTokenType(TokenType.RIGHT_PAREN);
         } else {
             error("Expected 'input' or 'output' in inout-stmt position: " + lookahead.getCharPosition());
         }
     }
 
     private void ifStmt() {
-        matchTokenType(TokenType.IF);
-        matchTokenType(TokenType.LEFT_PAREN);
+        compareTokenType(TokenType.IF);
+        compareTokenType(TokenType.LEFT_PAREN);
         boolExp();
-        matchTokenType(TokenType.RIGHT_PAREN);
-        matchTokenType(TokenType.THEN);
+        compareTokenType(TokenType.RIGHT_PAREN);
+        compareTokenType(TokenType.THEN);
         statement();
-        matchTokenType(TokenType.SEMICOLON);
+        compareTokenType(TokenType.SEMICOLON);
         elsePart();
-        matchTokenType(TokenType.ENDIF);
+        compareTokenType(TokenType.ENDIF);
     }
 
     private void elsePart() {
         if (lookahead.getType() == TokenType.ELSE) {
-            matchTokenType(TokenType.ELSE);
+            compareTokenType(TokenType.ELSE);
             statement();
         }
     }
 
     private void loopStmt() {
-        matchTokenType(TokenType.LOOP);
-        matchTokenType(TokenType.LEFT_PAREN);
+        compareTokenType(TokenType.LOOP);
+        compareTokenType(TokenType.LEFT_PAREN);
         boolExp();
-        matchTokenType(TokenType.RIGHT_PAREN);
-        matchTokenType(TokenType.DO);
+        compareTokenType(TokenType.RIGHT_PAREN);
+        compareTokenType(TokenType.DO);
         statement();
     }
 
@@ -240,22 +240,22 @@ public class Parser {
 
     private void relationalOper() {
         if (lookahead.getType() == TokenType.EQUALS)
-            matchTokenType(TokenType.EQUALS);
+            compareTokenType(TokenType.EQUALS);
         else if (lookahead.getType() == TokenType.NOT_EQUALS)
-            matchTokenType(TokenType.NOT_EQUALS);
+            compareTokenType(TokenType.NOT_EQUALS);
         else if (lookahead.getType() == TokenType.LESS_THAN)
-            matchTokenType(TokenType.LESS_THAN);
+            compareTokenType(TokenType.LESS_THAN);
         else if (lookahead.getType() == TokenType.LESS_THAN_EQUALS)
-            matchTokenType(TokenType.LESS_THAN_EQUALS);
+            compareTokenType(TokenType.LESS_THAN_EQUALS);
         else if (lookahead.getType() == TokenType.GREATER_THAN)
-            matchTokenType(TokenType.GREATER_THAN);
+            compareTokenType(TokenType.GREATER_THAN);
         else if (lookahead.getType() == TokenType.GREATER_THAN_EQUALS)
-            matchTokenType(TokenType.GREATER_THAN_EQUALS);
+            compareTokenType(TokenType.GREATER_THAN_EQUALS);
         else
             error("Expected relational operator position: " + lookahead.getCharPosition());
     }
 
-    private void matchTokenType(TokenType expected) {
+    private void compareTokenType(TokenType expected) {
         if (lookahead.getType() == expected) {
             lookahead = lexicalAnalyzer.nextToken();
         } else {
@@ -263,7 +263,7 @@ public class Parser {
         }
     }
 
-    private void matchTokenType(TokenType expected, TokenType expected2) {
+    private void compareTokenType(TokenType expected, TokenType expected2) {
         if (lookahead.getType() == expected || lookahead.getType() == expected2) {
             lookahead = lexicalAnalyzer.nextToken();
         } else {
@@ -272,8 +272,7 @@ public class Parser {
     }
 
     private void error(String message) {
-        System.err.println("Error: " + message);
-        System.exit(1);
+        throw new IllegalArgumentException(message);
     }
 }
 

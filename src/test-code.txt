@@ -1,0 +1,5 @@
+project name;
+var x: int;
+start
+x := 10;
+end.

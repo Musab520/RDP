@@ -1,0 +1,9 @@
+project name;
+var
+  x: int;
+start
+  x := 1;
+  loop (x <= 10) do
+    output(x);
+    x := x + 1;
+end.

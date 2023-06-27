@@ -1,0 +1,11 @@
+project name;
+const
+  PI = 314159;
+var
+  radius: int;
+  area: int;
+start
+  radius := 5;
+  area := PI * radius * radius;
+  output(area);
+end.

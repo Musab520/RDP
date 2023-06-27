@@ -1,0 +1,15 @@
+project name;
+var
+  x: int;
+
+routine square;
+var
+  num: int;
+start
+  num := x * x;
+  output(num);
+end;
+
+start
+  x := 3;
+end.

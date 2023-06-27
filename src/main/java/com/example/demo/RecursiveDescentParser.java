@@ -4,11 +4,11 @@ import javafx.scene.control.Alert;
 
 import java.util.ArrayList;
 
-public class Parser {
+public class RecursiveDescentParser {
     private LexicalAnalyzer lexicalAnalyzer;
     private Token lookahead;
 
-    public Parser(ArrayList<String> input) {
+    public RecursiveDescentParser(ArrayList<String> input) {
         lexicalAnalyzer = new LexicalAnalyzer(input);
         lookahead = lexicalAnalyzer.nextToken();
     }

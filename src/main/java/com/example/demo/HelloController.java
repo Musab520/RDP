@@ -3,15 +3,12 @@ package com.example.demo;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Formattable;
 import java.util.Scanner;
 
 public class HelloController {
@@ -57,8 +54,8 @@ public class HelloController {
                 }
             }
 
-            Parser parser = new Parser(cleaningInputArray);
-            parser.parse();
+            RecursiveDescentParser recursiveDescentParser = new RecursiveDescentParser(cleaningInputArray);
+            recursiveDescentParser.parse();
         }
     }
 }

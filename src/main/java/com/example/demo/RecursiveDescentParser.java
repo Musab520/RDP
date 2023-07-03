@@ -14,7 +14,7 @@ public class RecursiveDescentParser {
     }
 
     public void parse() {
-        projectDeclaration();
+        ProjectDeclaration();
 
         if (lookahead.getType() == TokenType.DOT) {
             compareTokenType(TokenType.DOT);
@@ -26,61 +26,61 @@ public class RecursiveDescentParser {
         }
     }
 
-    private void projectDeclaration() {
-        projectDef();
+    private void ProjectDeclaration() {
+        ProjectDef();
     }
 
-    private void projectDef() {
-        projectHeading();
-        declarations();
-        compoundStmt();
+    private void ProjectDef() {
+        ProjectHeading();
+        Declarations();
+        CompoundStmt();
     }
 
-    private void projectHeading() {
+    private void ProjectHeading() {
         compareTokenType(TokenType.PROJECT);
         compareTokenType(TokenType.NAME);
         compareTokenType(TokenType.SEMICOLON);
     }
 
-    private void declarations() {
-        constDecl();
-        varDecl();
-        subroutineDecl();
+    private void Declarations() {
+        ConstDecl();
+        VarDecl();
+        SubroutineDecl();
     }
 
-    private void constDecl() {
+    private void ConstDecl() {
         if (lookahead.getType() == TokenType.CONST) {
             compareTokenType(TokenType.CONST);
             while (lookahead.getType() == TokenType.NAME) {
-                constItem();
+                ConstItem();
                 compareTokenType(TokenType.SEMICOLON);
             }
         }
     }
 
-    private void constItem() {
+    private void ConstItem() {
         compareTokenType(TokenType.NAME);
         compareTokenType(TokenType.EQUALS);
         compareTokenType(TokenType.INTEGER_VALUE);
     }
 
-    private void varDecl() {
+    private void VarDecl() {
         if (lookahead.getType() == TokenType.VAR) {
             compareTokenType(TokenType.VAR);
             while (lookahead.getType() == TokenType.NAME) {
-                varItem();
+                VarItem();
                 compareTokenType(TokenType.SEMICOLON);
             }
         }
     }
 
-    private void varItem() {
-        nameList();
+    private void VarItem() {
+        NameList();
         compareTokenType(TokenType.COLON);
         compareTokenType(TokenType.INT);
     }
 
-    private void nameList() {
+    private void NameList() {
         compareTokenType(TokenType.NAME);
         while (lookahead.getType() == TokenType.COMMA) {
             compareTokenType(TokenType.COMMA);
@@ -88,11 +88,11 @@ public class RecursiveDescentParser {
         }
     }
 
-    private void subroutineDecl() {
+    private void SubroutineDecl() {
         if (lookahead.getType() == TokenType.ROUTINE) {
             subroutineHeading();
-            declarations();
-            compoundStmt();
+            Declarations();
+            CompoundStmt();
             compareTokenType(TokenType.SEMICOLON);
         }
     }
@@ -103,40 +103,40 @@ public class RecursiveDescentParser {
         compareTokenType(TokenType.SEMICOLON);
     }
 
-    private void compoundStmt() {
+    private void CompoundStmt() {
         compareTokenType(TokenType.START);
-        stmtList();
+        StmtList();
         compareTokenType(TokenType.END);
     }
 
-    private void stmtList() {
+    private void StmtList() {
         while (lookahead.getType() != TokenType.END) {
-                statement();
+                Statement();
             if (lookahead.getType() != TokenType.SEMICOLON)
-                error("Expected ';' between statements position: " + lookahead.getCharPosition());
+                error("Expected ';' between Statements position: " + lookahead.getCharPosition());
             compareTokenType(TokenType.SEMICOLON);
         }
     }
 
-    private void statement() {
+    private void Statement() {
         if (lookahead.getType() == TokenType.NAME)
-            assStmt();
+            AssStmt();
         else if (lookahead.getType() == TokenType.INPUT || lookahead.getType() == TokenType.OUTPUT)
-            inoutStmt();
+            InoutStmt();
         else if (lookahead.getType() == TokenType.IF)
-            ifStmt();
+            IfStmt();
         else if (lookahead.getType() == TokenType.LOOP)
-            loopStmt();
+            LoopStmt();
     }
 
-    private void assStmt() {
+    private void AssStmt() {
         compareTokenType(TokenType.NAME);
         compareTokenType(TokenType.COLON);
         compareTokenType(TokenType.EQUALS);
-        arithExp();
+        ArithExp();
     }
 
-    private void arithExp() {
+    private void ArithExp() {
         term();
         while (lookahead.getType() == TokenType.ADD_SIGN || lookahead.getType() == TokenType.SUB_SIGN) {
             if (lookahead.getType() == TokenType.ADD_SIGN) {
@@ -170,16 +170,16 @@ public class RecursiveDescentParser {
     private void factor() {
         if (lookahead.getType() == TokenType.LEFT_PAREN) {
             compareTokenType(TokenType.LEFT_PAREN);
-            arithExp();
+            ArithExp();
             compareTokenType(TokenType.RIGHT_PAREN);
         } else if (lookahead.getType() == TokenType.NAME || lookahead.getType() == TokenType.INTEGER_VALUE) {
-            nameValue();
+            NameValue();
         } else {
             error("Expected '(' or name or integer value in factor position: " + lookahead.getCharPosition() );
         }
     }
 
-    private void nameValue() {
+    private void NameValue() {
         if (lookahead.getType() == TokenType.NAME)
             compareTokenType(TokenType.NAME);
         else if (lookahead.getType() == TokenType.INTEGER_VALUE)
@@ -188,7 +188,7 @@ public class RecursiveDescentParser {
             error("Expected name or integer value in name-value position: " + lookahead.getCharPosition() );
     }
 
-    private void inoutStmt() {
+    private void InoutStmt() {
         if (lookahead.getType() == TokenType.INPUT) {
             compareTokenType(TokenType.INPUT);
             compareTokenType(TokenType.LEFT_PAREN);
@@ -197,48 +197,48 @@ public class RecursiveDescentParser {
         } else if (lookahead.getType() == TokenType.OUTPUT) {
             compareTokenType(TokenType.OUTPUT);
             compareTokenType(TokenType.LEFT_PAREN);
-            nameValue();
+            NameValue();
             compareTokenType(TokenType.RIGHT_PAREN);
         } else {
             error("Expected 'input' or 'output' in inout-stmt position: " + lookahead.getCharPosition());
         }
     }
 
-    private void ifStmt() {
+    private void IfStmt() {
         compareTokenType(TokenType.IF);
         compareTokenType(TokenType.LEFT_PAREN);
-        boolExp();
+        BoolExp();
         compareTokenType(TokenType.RIGHT_PAREN);
         compareTokenType(TokenType.THEN);
-        statement();
+        Statement();
         compareTokenType(TokenType.SEMICOLON);
-        elsePart();
+        ElsePart();
         compareTokenType(TokenType.ENDIF);
     }
 
-    private void elsePart() {
+    private void ElsePart() {
         if (lookahead.getType() == TokenType.ELSE) {
             compareTokenType(TokenType.ELSE);
-            statement();
+            Statement();
         }
     }
 
-    private void loopStmt() {
+    private void LoopStmt() {
         compareTokenType(TokenType.LOOP);
         compareTokenType(TokenType.LEFT_PAREN);
-        boolExp();
+        BoolExp();
         compareTokenType(TokenType.RIGHT_PAREN);
         compareTokenType(TokenType.DO);
-        statement();
+        Statement();
     }
 
-    private void boolExp() {
-        nameValue();
-        relationalOper();
-        nameValue();
+    private void BoolExp() {
+        NameValue();
+        RelationalOper();
+        NameValue();
     }
 
-    private void relationalOper() {
+    private void RelationalOper() {
         if (lookahead.getType() == TokenType.EQUALS)
             compareTokenType(TokenType.EQUALS);
         else if (lookahead.getType() == TokenType.NOT_EQUALS)

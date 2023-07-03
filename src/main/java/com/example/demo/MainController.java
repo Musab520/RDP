@@ -11,7 +11,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class HelloController {
+public class MainController {
     @FXML
     public TextField filePathTextField;
     @FXML

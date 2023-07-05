@@ -90,6 +90,10 @@ public class LexicalAnalyzer {
             position++;
             charPosition++;
             return new Token(TokenType.GREATER_THAN_EQUALS, ">=", lineNumber, charPosition);
+        } else if (currentString.equals("<>")) {
+            position++;
+            charPosition++;
+            return new Token(TokenType.NOT_EQUALS, "<>", lineNumber, charPosition);
         } else if (currentString.equals(" ")) {
             position++;
             charPosition++;

@@ -127,6 +127,8 @@ public class RecursiveDescentParser {
             IfStmt();
         else if (lookahead.getType() == TokenType.LOOP)
             LoopStmt();
+        else if (lookahead.getType() == TokenType.START)
+            CompoundStmt();
     }
 
     private void AssStmt() {
@@ -241,16 +243,20 @@ public class RecursiveDescentParser {
     private void RelationalOper() {
         if (lookahead.getType() == TokenType.EQUALS)
             compareTokenType(TokenType.EQUALS);
-        else if (lookahead.getType() == TokenType.NOT_EQUALS)
-            compareTokenType(TokenType.NOT_EQUALS);
-        else if (lookahead.getType() == TokenType.LESS_THAN)
+        else if (lookahead.getType() == TokenType.LESS_THAN) {
             compareTokenType(TokenType.LESS_THAN);
-        else if (lookahead.getType() == TokenType.LESS_THAN_EQUALS)
-            compareTokenType(TokenType.LESS_THAN_EQUALS);
-        else if (lookahead.getType() == TokenType.GREATER_THAN)
+            if (lookahead.getType() == TokenType.EQUALS) {
+                compareTokenType(TokenType.EQUALS);
+            } else if (lookahead.getType().equals(TokenType.GREATER_THAN)) {
+                compareTokenType(TokenType.GREATER_THAN);
+            }
+        }
+        else if (lookahead.getType() == TokenType.GREATER_THAN) {
             compareTokenType(TokenType.GREATER_THAN);
-        else if (lookahead.getType() == TokenType.GREATER_THAN_EQUALS)
-            compareTokenType(TokenType.GREATER_THAN_EQUALS);
+            if (lookahead.getType().equals(TokenType.EQUALS)) {
+                compareTokenType(TokenType.EQUALS);
+            }
+        }
         else
             error("Expected relational operator position: " + lookahead.getCharPosition());
     }

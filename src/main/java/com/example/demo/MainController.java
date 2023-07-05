@@ -44,7 +44,7 @@ public class MainController {
                 throw new RuntimeException(e);
             }
 
-            String[] inputArray = input.split("\\s+|(?<=[();,:.])|(?=[();,:.])");
+            String[] inputArray = input.split("\\s+|(?<=[<>();,:.=%+-])|(?=[<>();,:.=%+-])");
             ArrayList<String> cleaningInputArray = new ArrayList<>();
 
             for (String s : inputArray) {

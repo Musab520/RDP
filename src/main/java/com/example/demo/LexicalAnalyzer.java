@@ -104,14 +104,14 @@ public class LexicalAnalyzer {
             charPosition = 1;
             return new Token(TokenType.NEW_LINE, "\n", lineNumber, charPosition);
         }
-        // Add more token recognition logic here based on your grammar
+
 
         return new Token(TokenType.ERROR, "Invalid token", lineNumber, charPosition);
     }
 
     private Token parseIdentifier(String identifierStr) {
         position++;
-        // Check if the identifier is a reserved word
+
         switch (identifierStr) {
             case "project" -> {
                 return new Token(TokenType.PROJECT, identifierStr, lineNumber, charPosition);

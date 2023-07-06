@@ -21,7 +21,7 @@ public class MainController {
     @FXML
     private void browseButtonClicked() {
         FileChooser fileChooser = new FileChooser();
-        Stage stage = (Stage) browseButton.getScene().getWindow(); // Get the current stage
+        Stage stage = (Stage) browseButton.getScene().getWindow();
         selectedFile = fileChooser.showOpenDialog(stage);
         if (selectedFile != null) {
             filePathTextField.setText(selectedFile.getAbsolutePath());
